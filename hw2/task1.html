@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Проверка треугольника</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="container">
+    <h1 class="title">Определение существования треугольника</h1>
+    <p class="description">Введите длины сторон, чтобы узнать, существует ли треугольник с такими сторонами.</p>
+
+    <form onsubmit="event.preventDefault(); checkTriangle();">
+        <div class="input-group">
+            <label for="sideA">Сторона A:</label>
+            <input type="number" id="sideA" placeholder="Например, 5" required>
+        </div>
+
+        <div class="input-group">
+            <label for="sideB">Сторона B:</label>
+            <input type="number" id="sideB" placeholder="Например, 7" required>
+        </div>
+
+        <div class="input-group">
+            <label for="sideC">Сторона C:</label>
+            <input type="number" id="sideC" placeholder="Например, 10" required>
+        </div>
+
+        <button type="submit">Проверить</button>
+    </form>
+
+    <div id="result" class="result hidden"></div>
+</div>
+
+<script>
+function checkTriangleExistence(a, b, c) {
+    if (a + b > c && a + c > b && b + c > a) {
+        return "✅ Треугольник может существовать.";
+    } else {
+        return "❌ Треугольник не может существовать.";
+    }
+}
+
+function checkTriangle() {
+    const sideA = parseFloat(document.getElementById('sideA').value);
+    const sideB = parseFloat(document.getElementById('sideB').value);
+    const sideC = parseFloat(document.getElementById('sideC').value);
+
+    const resultDiv = document.getElementById('result');
+
+    if (isNaN(sideA) || isNaN(sideB) || isNaN(sideC) || sideA <= 0 || sideB <= 0 || sideC <= 0) {
+        resultDiv.textContent = "Пожалуйста, введите положительные значения сторон.";
+        resultDiv.classList.remove('hidden');
+        return;
+    }
+
+    const result = checkTriangleExistence(sideA, sideB, sideC);
+    resultDiv.textContent = result;
+    resultDiv.classList.remove('hidden');
+}
+</script>
+
+<style>
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    background-color: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    padding: 20px 30px;
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+}
+
+.title {
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.description {
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.input-group {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+label {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 5px;
+    display: block;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+button {
+    background-color: #6a67ce;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #5754c9;
+}
+
+.result {
+    margin-top: 20px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.hidden {
+    display: none;
+}
+</style>
+
+</body>
+</html>

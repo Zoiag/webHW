@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Passport Info</title>
+    <style>
+        /* Основные стили для страницы */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Стиль для паспорта */
+        .passport-wrapper {
+            position: relative;
+            width: 650px;
+            height: 850px;
+            background-image: url('passport_background.jpg'); /* Фоновое изображение */
+            background-size: cover;
+            border: 3px solid #004085; /* Синяя рамка */
+            border-radius: 10px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3); /* Тень */
+            margin-bottom: 20px;
+        }
+
+        /* Стили для текста данных паспорта */
+        .passport-data {
+            position: absolute;
+            font-size: 20px;
+            font-weight: bold;
+            color: #000;
+        }
+
+        /* Позиции для фамилии, имени, отчества и других данных */
+        .last-name { top: 535px; left: 290px; }
+        .first-name { top: 605px; left: 265px; }
+        .sex { top: 678px; left: 250px; }
+        .place-of-birth { top: 710px; left: 290px; }
+
+        /* Стиль для кнопок */
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .button {
+            background-color: #004085; /* Цвет кнопки */
+            color: #fff; /* Цвет текста */
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s; /* Эффект при наведении */
+        }
+
+        .button:hover {
+            background-color: #0056b3; /* Новый цвет при наведении */
+        }
+
+        /* Стиль для таблицы умножения */
+        .multiplication-table {
+            margin-top: 20px;
+            border-collapse: collapse;
+            width: 500px;
+        }
+
+        .multiplication-table td, .multiplication-table th {
+            border: 2px solid #004085;
+            text-align: center;
+            padding: 10px;
+            font-size: 18px;
+        }
+
+        .multiplication-table tr:first-child td,
+        .multiplication-table td:first-child {
+            background-color: #004085; /* Синий фон для заголовков */
+            color: #fff; /* Белый текст */
+        }
+
+        .multiplication-table td {
+            background-color: #e6f2ff; /* Голубой фон для ячеек */
+        }
+    </style>
+</head>
+<body>
+    <div class="passport-wrapper">
+        <!-- Данные для отображения паспорта -->
+        <div class="passport-data last-name" id="lastName">Иванов</div>
+        <div class="passport-data first-name" id="firstName">Иван</div>
+        <div class="passport-data sex" id="gender">Мужской</div>
+        <div class="passport-data place-of-birth" id="placeOfBirth">Москва</div>
+    </div>
+
+    <div class="action-buttons">
+        <!-- Кнопки для действий -->
+        <button class="button" id="translateButton">Перевести</button>
+        <button class="button" id="toggleTableButton">Показать таблицу умножения</button>
+    </div>
+
+    <table class="multiplication-table" id="table"></table>
+
+    <script>
+        let isTranslated = false; // Флаг состояния перевода
+
+        // Функция для перевода данных
+        function translateData() {
+            const lastNameEl = document.getElementById('lastName');
+            const firstNameEl = document.getElementById('firstName');
+            const genderEl = document.getElementById('gender');
+            const placeOfBirthEl = document.getElementById('placeOfBirth');
+
+            if (isTranslated) {
+                lastNameEl.innerText = 'Иванов';
+                firstNameEl.innerText = 'Иван';
+                genderEl.innerText = 'Мужской';
+                placeOfBirthEl.innerText = 'Москва';
+                isTranslated = false;
+            } else {
+                lastNameEl.innerText = 'Ivanov';
+                firstNameEl.innerText = 'Ivan';
+                genderEl.innerText = 'Male';
+                placeOfBirthEl.innerText = 'Moscow';
+                isTranslated = true;
+            }
+        }
+
+        // Функция для генерации таблицы умножения
+        function generateTable() {
+            const table = document.getElementById('table');
+            table.innerHTML = ''; // Очистка таблицы
+            const size = 9;
+
+            for (let i = 0; i <= size; i++) {
+                const row = document.createElement('tr');
+                for (let j = 0; j <= size; j++) {
+                    const cell = document.createElement(i === 0 || j === 0 ? 'th' : 'td');
+                    cell.textContent = i === 0 ? (j === 0 ? '' : j) : (j === 0 ? i : i * j);
+                    row.appendChild(cell);
+                }
+                table.appendChild(row);
+            }
+        }
+
+        // Функция для показа/скрытия таблицы
+        function toggleTable() {
+            const table = document.getElementById('table');
+            if (table.innerHTML === '') {
+                generateTable(); // Создание таблицы
+                document.getElementById('toggleTableButton').innerText = 'Скрыть таблицу умножения';
+            } else {
+                table.innerHTML = ''; // Очистка таблицы
+                document.getElementById('toggleTableButton').innerText = 'Показать таблицу умножения';
+            }
+        }
+
+        // Назначение функций кнопкам
+        document.getElementById('translateButton').addEventListener('click', translateData);
+        document.getElementById('toggleTableButton').addEventListener('click', toggleTable);
+    </script>
+</body>
+</html>

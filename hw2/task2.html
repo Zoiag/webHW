@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Возведение в степень</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="container">
+    <h1 class="title">Возведение в степень</h1>
+    <p class="description">Введите число Y, чтобы вычислить значение степени по формуле (Y-2)^Y.</p>
+
+    <form onsubmit="event.preventDefault(); calculatePower();">
+        <div class="input-group">
+            <label for="numberY">Число Y:</label>
+            <input type="number" id="numberY" placeholder="Например, 3" required>
+        </div>
+
+        <button type="submit">Вычислить</button>
+    </form>
+
+    <div id="result" class="result hidden"></div>
+</div>
+
+<script>
+const powerCalculator = {
+    base: 2,
+    calculate: function(Y) {
+        return Math.pow(Y - this.base, Y);
+    }
+};
+
+function calculatePower() {
+    const numberY = parseFloat(document.getElementById('numberY').value);
+    const resultDiv = document.getElementById('result');
+
+    if (isNaN(numberY) || numberY <= 2) {
+        resultDiv.textContent = "Пожалуйста, введите число больше 2.";
+        resultDiv.classList.remove('hidden');
+        return;
+    }
+
+    const result = powerCalculator.calculate(numberY);
+    resultDiv.textContent = `Результат: ${result.toFixed(2)}`;
+    resultDiv.classList.remove('hidden');
+}
+</script>
+
+<style>
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    background-color: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    padding: 20px 30px;
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+}
+
+.title {
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.description {
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.input-group {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+label {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 5px;
+    display: block;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+button {
+    background-color: #6a67ce;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #5754c9;
+}
+
+.result {
+    margin-top: 20px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.hidden {
+    display: none;
+}
+</style>
+
+</body>
+</html>
