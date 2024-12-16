@@ -1,0 +1,8 @@
+[
+    {"id": 1, "name": "Эфиопская Арабика", "price": 1200, "description": "Кофе с ягодными нотами.", "intensity": 6, "type": "arabica", "img": "./images/ethiopian.png"},
+    {"id": 2, "name": "Колумбийская Арабика", "price": 1400, "description": "Сладкий кофе с ароматом шоколада.", "intensity": 5, "type": "arabica", "img": "./images/colombian.jpg"},
+    {"id": 3, "name": "Робуста Вьетнам", "price": 900, "description": "Крепкий и насыщенный вкус.", "intensity": 8, "type": "robusta", "img": "./images/robusta.png"},
+    {"id": 4, "name": "Бразильская смесь", "price": 1100, "description": "Баланс арабики и робусты.", "intensity": 7, "type": "blend", "img": "./images/blend.png"},
+    {"id": 5, "name": "Индийский декаф", "price": 1000, "description": "Кофе без кофеина.", "intensity": 4, "type": "decaf", "img": "./images/indian.png"},
+    {"id": 6, "name": "Гватемальский Бленд", "price": 1300, "description": "Сбалансированный вкус.", "intensity": 6, "type": "blend", "img": "./images/guatemalan.png"}
+]

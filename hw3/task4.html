@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Анализ максимальной прибыли</title>
+    <style>
+        body {
+            font-family: 'Verdana', sans-serif;
+            background: linear-gradient(135deg, #f3f4f6, #e2e8f0);
+            text-align: center;
+            padding: 40px;
+            margin: 0;
+        }
+
+        h1 {
+            color: #2d3748;
+            margin-bottom: 20px;
+        }
+
+        .input-container {
+            margin: 20px auto;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        input {
+            padding: 10px;
+            width: 250px;
+            border: 2px solid #cbd5e0;
+            border-radius: 5px;
+            font-size: 16px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: border-color 0.3s ease;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #4299e1;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            color: white;
+            background-color: #4a90e2;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #2b6cb0;
+        }
+
+        .entries-container {
+            margin-top: 30px;
+        }
+
+        .entries-container p {
+            font-size: 18px;
+            color: #4a5568;
+            margin: 5px 0;
+        }
+
+        #result {
+            margin-top: 30px;
+            font-size: 20px;
+            color: #2f855a;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Анализ максимальной прибыли</h1>
+
+    <div class="input-container">
+        <input type="text" id="inputField" placeholder="Товар, Прибыль">
+        <button onclick="addEntry()">Добавить</button>
+    </div>
+
+    <div class="entries-container" id="entries"></div>
+    <div id="result"></div>
+
+    <script>
+        let data = [];
+
+        function addEntry() {
+            const input = document.getElementById('inputField').value.trim();
+            if (input.toUpperCase() === "END") {
+                calculateMaxProfit();
+                return;
+            }
+
+            if (input) {
+                const entry = input.split(',').map(item => item.trim());
+                if (entry.length === 2 && !isNaN(Number(entry[1]))) {
+                    data.push({ name: entry[0], profit: Number(entry[1]) });
+                    const entryElement = document.createElement('p');
+                    entryElement.textContent = `${entry[0]}: ${entry[1]}`;
+                    document.getElementById('entries').appendChild(entryElement);
+                    document.getElementById('inputField').value = '';
+                } else {
+                    alert("Введите данные в формате: Товар, Прибыль");
+                }
+            }
+        }
+
+        function calculateMaxProfit() {
+            const profitMap = {};
+
+            data.forEach(entry => {
+                profitMap[entry.name] = (profitMap[entry.name] || 0) + entry.profit;
+            });
+
+            let maxProfit = -Infinity;
+            let maxItem = '';
+
+            for (const [item, profit] of Object.entries(profitMap)) {
+                if (profit > maxProfit) {
+                    maxProfit = profit;
+                    maxItem = item;
+                }
+            }
+
+            document.getElementById('result').textContent = `Товар с максимальной прибылью: ${maxItem} (${maxProfit})`;
+        }
+    </script>
+</body>
+</html>

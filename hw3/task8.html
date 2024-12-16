@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Проверка города</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #e2f3f5, #d9e8f0);
+            margin: 0;
+            padding: 40px;
+            text-align: center;
+            color: #2d3748;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #2b6cb0;
+        }
+
+        .input-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        input {
+            padding: 12px;
+            width: 280px;
+            border: 2px solid #cbd5e0;
+            border-radius: 5px;
+            font-size: 16px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: border-color 0.3s ease;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #4299e1;
+        }
+
+        button {
+            padding: 12px 20px;
+            font-size: 16px;
+            color: white;
+            background-color: #3182ce;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #2b6cb0;
+        }
+
+        #result {
+            margin-top: 30px;
+            font-size: 18px;
+            color: #2f855a;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Проверка наличия города</h1>
+    <div class="input-container">
+        <input type="text" id="cityInput" placeholder="Введите название города...">
+        <button onclick="verifyCity()">Проверить</button>
+    </div>
+    <p id="result"></p>
+
+    <script>
+        const cityList = [
+            "Москва", "Санкт-Петербург", "Саратов", "Магадан", "Ярославль", "Самара", "Якутск",
+            "Казань", "Владивосток", "Новосибирск", "Красноярск", "Омск", "Уфа", "Челябинск", "Воронеж",
+            "Нижний Новгород", "Томск", "Иркутск", "Хабаровск", "Тюмень", "Пермь", "Калининград", "Ростов-на-Дону"
+        ];
+
+        function verifyCity() {
+            const userInput = document.getElementById('cityInput').value.trim();
+            const outputElement = document.getElementById('result');
+
+            if (cityList.some(city => city.toLowerCase() === userInput.toLowerCase())) {
+                const firstChar = userInput[0].toUpperCase();
+                const matchingCities = cityList.filter(city => city.startsWith(firstChar));
+                outputElement.textContent = `Города, начинающиеся с буквы "${firstChar}": ${matchingCities.join(', ')}`;
+            } else {
+                outputElement.textContent = 'Город не найден в списке.';
+            }
+        }
+    </script>
+
+</body>
+</html>

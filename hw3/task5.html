@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Анализ калорийности продуктов</title>
+    <style>
+        body {
+            font-family: 'Verdana', sans-serif;
+            background: linear-gradient(135deg, #f3f4f6, #e2e8f0);
+            text-align: center;
+            padding: 40px;
+            margin: 0;
+        }
+
+        h1 {
+            color: #2d3748;
+            margin-bottom: 20px;
+        }
+
+        .input-container {
+            margin: 20px auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            align-items: center;
+        }
+
+        input {
+            padding: 10px;
+            width: 300px;
+            border: 2px solid #cbd5e0;
+            border-radius: 5px;
+            font-size: 16px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: border-color 0.3s ease;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #4299e1;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            color: white;
+            background-color: #4a90e2;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #2b6cb0;
+        }
+
+        #result {
+            margin-top: 30px;
+            font-size: 20px;
+            color: #2f855a;
+            font-weight: bold;
+        }
+
+    </style>
+</head>
+<body>
+
+    <h1>Анализ калорийности продуктов</h1>
+
+    <div class="input-container">
+        <input type="text" id="productNames" placeholder="Введите названия продуктов через пробел">
+        <input type="text" id="productValues" placeholder="Введите значения (белки-жиры-углеводы) через пробел">
+        <button onclick="findLowestCalorieProduct()">Рассчитать</button>
+    </div>
+
+    <div id="result"></div>
+
+    <script>
+        function findLowestCalorieProduct() {
+            const names = document.getElementById("productNames").value.trim().split(" ");
+            const values = document.getElementById("productValues").value.trim().split(" ");
+
+            if (names.length !== values.length) {
+                document.getElementById("result").textContent = "Количество продуктов и данных о них не совпадает.";
+                return;
+            }
+
+            let minCalories = Infinity;
+            let lowestCalorieProduct = '';
+
+            for (let i = 0; i < names.length; i++) {
+                const [proteins, fats, carbs] = values[i].split('-').map(Number);
+
+                if (isNaN(proteins) || isNaN(fats) || isNaN(carbs)) {
+                    document.getElementById("result").textContent = "Ошибка: проверьте правильность введенных данных.";
+                    return;
+                }
+
+                const calories = 0.4 * proteins + 0.3 * fats + 0.3 * carbs;
+
+                if (calories < minCalories) {
+                    minCalories = calories;
+                    lowestCalorieProduct = names[i];
+                }
+            }
+
+            document.getElementById("result").textContent = `Продукт с самой низкой калорийностью: ${lowestCalorieProduct}`;
+        }
+    </script>
+</body>
+</html>

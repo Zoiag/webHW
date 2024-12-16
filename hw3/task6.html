@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Концерты 2023</title>
+    <style>
+        body {
+            font-family: 'Verdana', sans-serif;
+            background: linear-gradient(135deg, #f3f4f6, #e2e8f0);
+            text-align: center;
+            padding: 40px;
+            margin: 0;
+        }
+
+        h1 {
+            color: #2d3748;
+            margin-bottom: 20px;
+        }
+
+        .input-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        textarea {
+            padding: 10px;
+            width: 300px;
+            height: 150px;
+            border: 2px solid #cbd5e0;
+            border-radius: 5px;
+            font-size: 16px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: border-color 0.3s ease;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #4299e1;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            color: white;
+            background-color: #4a90e2;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #2b6cb0;
+        }
+
+        #result {
+            margin-top: 30px;
+            font-size: 20px;
+            color: #2f855a;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Найти группу с наибольшим количеством концертов в 2023 году</h1>
+
+    <div class="input-container">
+        <textarea id="concertsData" placeholder="Введите данные о концертах..."></textarea>
+        <button onclick="identifyTopGroup()">Найти группу</button>
+    </div>
+
+    <div id="result"></div>
+
+    <script>
+        function identifyTopGroup() {
+            const rawInput = document.getElementById('concertsData').value.trim().split('\n');
+            const groupConcerts = {};
+            let isInputComplete = false;
+
+            for (let lineIndex = 0; lineIndex < rawInput.length; lineIndex++) {
+                const currentLine = rawInput[lineIndex].trim();
+
+                if (currentLine === 'END') {
+                    isInputComplete = true;
+                    break;
+                }
+
+                const details = currentLine.split(', ');
+                if (details.length !== 2) {
+                    document.getElementById('result').textContent = `Ошибка: строка ${lineIndex + 1} имеет неверный формат.`;
+                    return;
+                }
+
+                const groupName = details[0];
+                const concertDate = details[1];
+                const validDatePattern = /^\d{2}\.\d{2}\.\d{4}$/;
+
+                if (!validDatePattern.test(concertDate)) {
+                    document.getElementById('result').textContent = `Ошибка: строка ${lineIndex + 1} содержит некорректную дату.`;
+                    return;
+                }
+
+                const concertYear = concertDate.split('.')[2];
+                if (concertYear === '2023') {
+                    groupConcerts[groupName] = (groupConcerts[groupName] || 0) + 1;
+                }
+            }
+
+            if (!isInputComplete) {
+                document.getElementById('result').textContent = 'Ошибка: не найдено "END" для завершения ввода.';
+                return;
+            }
+
+            let topGroup = '';
+            let highestConcertCount = 0;
+
+            for (const [group, count] of Object.entries(groupConcerts)) {
+                if (count > highestConcertCount) {
+                    highestConcertCount = count;
+                    topGroup = group;
+                }
+            }
+
+            document.getElementById('result').textContent = topGroup
+                ? `Самая популярная группа: ${topGroup} (${highestConcertCount} концертов)`
+                : 'Данные о концертах отсутствуют';
+        }
+    </script>
+</body>
+</html>

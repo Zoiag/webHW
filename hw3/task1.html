@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Игра: Угадай число</title>
+    <style>
+        body {
+            font-family: 'Verdana', sans-serif;
+            background: linear-gradient(135deg, #f9f9f9, #e6e6e6);
+            text-align: center;
+            padding: 30px;
+            margin: 0;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .input-container {
+            margin: 15px 0;
+        }
+        input {
+            padding: 8px;
+            width: 150px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        button {
+            padding: 10px 15px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        p {
+            font-size: 18px;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Угадай число от 1 до 10</h1>
+
+<div class="input-container">
+    <p>Введите своё число ниже:</p>
+    <input type="number" id="guessInput" placeholder="1-10" min="1" max="10">
+    <button onclick="verifyGuess()">Проверить</button>
+</div>
+
+<p id="feedback"></p>
+<p id="remainingAttempts">Осталось попыток: 3</p>
+
+<script>
+    const secretNumber = Math.floor(Math.random() * 10) + 1;
+    let attemptsLeft = 3;
+
+    function verifyGuess() {
+        const userInput = document.getElementById('guessInput').value.trim();
+        const feedback = document.getElementById('feedback');
+        const remainingAttempts = document.getElementById('remainingAttempts');
+
+        if (!userInput) {
+            feedback.textContent = 'Введите число, чтобы продолжить.';
+            return;
+        }
+
+        const userGuess = Number(userInput);
+
+        if (userGuess < 1 || userGuess > 10 || isNaN(userGuess)) {
+            feedback.textContent = 'Пожалуйста, введите число от 1 до 10.';
+            return;
+        }
+
+        if (userGuess === secretNumber) {
+            feedback.textContent = 'Поздравляем! Вы угадали число!';
+            remainingAttempts.textContent = '';
+        } else {
+            attemptsLeft--;
+            if (attemptsLeft > 0) {
+                feedback.textContent = userGuess < secretNumber ? 'Слишком мало! Попробуйте снова.' : 'Слишком много! Попробуйте снова.';
+                remainingAttempts.textContent = `Осталось попыток: ${attemptsLeft}`;
+            } else {
+                feedback.textContent = `Увы, попытки закончились! Загаданное число: ${secretNumber}.`;
+                remainingAttempts.textContent = '';
+            }
+        }
+    }
+</script>
+
+</body>
+</html>

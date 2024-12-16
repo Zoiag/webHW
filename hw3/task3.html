@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Анализ успеваемости</title>
+    <style>
+        body {
+            font-family: 'Verdana', sans-serif;
+            background: linear-gradient(135deg, #f2f2f2, #d9d9d9);
+            text-align: center;
+            padding: 40px;
+            margin: 0;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .input-container {
+            margin: 20px 0;
+        }
+        input {
+            padding: 10px;
+            width: 300px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        button {
+            padding: 12px 20px;
+            font-size: 16px;
+            background-color: #5a9bd5;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #4a89c4;
+        }
+        p {
+            font-size: 18px;
+            color: #555;
+        }
+        .result {
+            font-weight: bold;
+            margin-top: 20px;
+            color: #d9534f;
+        }
+    </style>
+</head>
+<body>
+    <h1>Анализ успеваемости учеников</h1>
+
+    <div class="input-container">
+        <p>Введите имена учеников через запятую:</p>
+        <input type="text" id="studentNames" placeholder="Например: Алина, Маша, Игорь">
+    </div>
+
+    <div class="input-container">
+        <p>Введите оценки через пробел (каждая группа оценок через дефис):</p>
+        <input type="text" id="studentGrades" placeholder="Например: 45-30-20 78-60-50">
+    </div>
+
+    <button id="analyzeButton">Анализировать</button>
+
+    <p class="result" id="output"></p>
+
+    <script>
+        document.getElementById('analyzeButton').addEventListener('click', function () {
+            const namesInput = document.getElementById('studentNames').value.trim();
+            const gradesInput = document.getElementById('studentGrades').value.trim();
+            const output = document.getElementById('output');
+
+            if (!namesInput || !gradesInput) {
+                output.textContent = 'Пожалуйста, заполните оба поля.';
+                return;
+            }
+
+            const names = namesInput.split(',').map(name => name.trim());
+            const gradesList = gradesInput.split(' ');
+
+            if (names.length !== gradesList.length) {
+                output.textContent = 'Количество учеников и групп оценок должно совпадать.';
+                return;
+            }
+
+            let lowestAverage = Infinity;
+            let lowestStudent = '';
+
+            for (let i = 0; i < names.length; i++) {
+                const grades = gradesList[i].split('-').map(Number);
+
+                if (grades.length !== 3 || grades.some(isNaN)) {
+                    output.textContent = 'Каждый ученик должен иметь три числовых оценки.';
+                    return;
+                }
+
+                const average = grades.reduce((sum, grade) => sum + grade, 0) / grades.length;
+
+                if (average < lowestAverage) {
+                    lowestAverage = average;
+                    lowestStudent = names[i];
+                }
+            }
+
+            output.textContent = `Самый отстающий ученик: ${lowestStudent}`;
+        });
+    </script>
+</body>
+</html>

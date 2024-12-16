@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Оценка товаров</title>
+    <style>
+        body {
+            font-family: 'Verdana', sans-serif;
+            background: linear-gradient(135deg, #f3f4f6, #e2e8f0);
+            text-align: center;
+            padding: 40px;
+            margin: 0;
+        }
+
+        h1 {
+            color: #2d3748;
+            margin-bottom: 20px;
+        }
+
+        .input-container {
+            margin: 20px auto;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        input {
+            padding: 10px;
+            width: 300px;
+            border: 2px solid #cbd5e0;
+            border-radius: 5px;
+            font-size: 16px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: border-color 0.3s ease;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #4299e1;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            color: white;
+            background-color: #4a90e2;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #2b6cb0;
+        }
+
+        #result {
+            margin-top: 30px;
+            font-size: 20px;
+            color: #2f855a;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Оценка товаров</h1>
+
+    <div class="input-container">
+        <input type="text" id="productData" placeholder="Введите данные о товарах">
+        <button onclick="processProductData()">Оценить</button>
+    </div>
+
+    <div id="result"></div>
+
+    <script>
+        function processProductData() {
+            const input = document.getElementById('productData').value;
+            const entries = input.split('; '); // Разделение списка товаров
+
+            const productInfo = []; // Массив для хранения информации о товарах
+            let errorOccurred = false; // Флаг ошибки
+
+            entries.forEach(entry => {
+                const [itemName, itemPrices] = entry.split(':'); // Разделение названия и цен
+
+                const prices = itemPrices.split(',').map(Number); // Преобразование цен в числа
+                if (prices.length !== 3 || prices.some(isNaN)) {
+                    errorOccurred = true;
+                } else {
+                    const averagePrice = prices.reduce((sum, price) => sum + price, 0) / prices.length; // Средняя цена
+                    productInfo.push({ name: itemName.trim(), avgPrice: averagePrice });
+                }
+            });
+
+            if (errorOccurred) {
+                document.getElementById('result').textContent = "Ошибка: Укажите три корректные цены для каждого товара.";
+                return;
+            }
+
+            // Сортировка массива товаров по средней цене и алфавиту
+            productInfo.sort((a, b) => a.avgPrice === b.avgPrice ? a.name.localeCompare(b.name) : a.avgPrice - b.avgPrice);
+
+            // Формирование результата для отображения
+            const output = productInfo.map(product => `${product.name}: ${product.avgPrice.toFixed(2)}`).join('<br>');
+            document.getElementById('result').innerHTML = output;
+        }
+    </script>
+
+</body>
+</html>
