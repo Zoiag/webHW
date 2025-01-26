@@ -1,0 +1,63 @@
+.app-wrapper {
+    padding: 30px;
+    background: #fdfdfd;
+    color: #2c3e50;
+    border-radius: 15px;
+    max-width: 600px;
+    margin: auto;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+.app-wrapper h1 {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: #1abc9c;
+}
+.info-box {
+    background: #ecf0f1;
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 20px;
+}
+.button {
+    padding: 10px 15px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+.button:hover {
+    background-color: #2980b9;
+}
+.input-field {
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+    border: 1px solid #bdc3c7;
+    border-radius: 5px;
+    font-size: 16px;
+}
+.error {
+    color: #e74c3c;
+    margin-top: 10px;
+}
+.region-select {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.region-select .button {
+    margin-top: 15px;
+}
+
+.button-group {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+}
