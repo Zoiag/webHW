@@ -1,60 +1,114 @@
 <template>
-  <div class="test-app">
-    <h1 v-if="!currentTest" class="text-2xl font-bold mb-4">Тесты</h1>
-    
-    <div v-if="!currentTest">
-      <h2 class="text-xl mb-2">Выберите тест:</h2>
-      <ul class="test-list">
-        <li v-for="test in tests" :key="test.id" @click="selectTest(test.id)" class="cursor-pointer text-blue-500 hover:underline">
-          {{ test.name }}
+  <div class="app-container">
+    <h1 v-if="!activeTest" class="main-title">Выберите тест</h1>
+
+    <div v-if="!activeTest" class="test-selector">
+      <h2 class="subtitle">Список тестов:</h2>
+      <ul class="test-options">
+        <li
+          v-for="item in testList"
+          :key="item.code"
+          @click="selectTest(item.code)"
+          class="test-option"
+        >
+          {{ item.label }}
         </li>
       </ul>
     </div>
-    
-    <div v-else>
-      <component :is="currentTestComponent" @exit="currentTest = null" />
+
+    <div v-else class="test-display">
+      <component :is="activeComponent" @exit="exitTest" @go-to-main-menu="exitTest" />
     </div>
   </div>
 </template>
 
 <script>
 import SovietLogicTest from "./components/SovietLogicTest.vue";
-import SpatialThinkingTest from "./components/SpatialThinkingTest.vue";
+import SpatialSkillTest from "./components/SpatialThinkingTest.vue";
+import QuickResponseTest from "./components/ReactionTimeTest.vue";
+import NBackMemory from "./components/NBackGame.vue";
+import TimeEvaluator from "./components/TimePerception.vue";
 
 export default {
-  name: "TestApp",
+  name: "App",
   components: {
     SovietLogicTest,
-    SpatialThinkingTest,
+    SpatialSkillTest,
+    QuickResponseTest,
+    NBackMemory,
+    TimeEvaluator,
   },
   data() {
     return {
-      tests: [
-        { id: "sovietLogic", name: "Советские загадки на логику в картинках", component: "SovietLogicTest" },
-        { id: "spatialThinking", name: "Тест на пространственное мышление", component: "SpatialThinkingTest" },
+      testList: [
+        { code: "soviet", label: "Логические загадки", component: "SovietLogicTest" },
+        { code: "spatial", label: "Пространственное мышление", component: "SpatialSkillTest" },
+        { code: "reaction", label: "Тест на реакцию", component: "QuickResponseTest" },
+        { code: "nback", label: "N-Back тренировка памяти", component: "NBackMemory" },
+        { code: "time", label: "Тест оценки времени", component: "TimeEvaluator" },
       ],
-      currentTest: null,
-      currentTestComponent: null,
+      activeTest: null,
+      activeComponent: null,
     };
   },
   methods: {
-    selectTest(testId) {
-      const selectedTest = this.tests.find((test) => test.id === testId);
-      if (selectedTest) {
-        this.currentTest = selectedTest;
-        this.currentTestComponent = selectedTest.component;
+    selectTest(code) {
+      const chosen = this.testList.find((item) => item.code === code);
+      if (chosen) {
+        this.activeTest = chosen;
+        this.activeComponent = chosen.component;
       }
     },
+    exitTest() {
+      this.activeTest = null;
+      this.activeComponent = null;
+    }
   },
 };
 </script>
 
+
 <style scoped>
-.test-app {
+.app-container {
   padding: 20px;
-  font-family: Arial, sans-serif;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
-.test-list li {
+
+.main-title {
+  font-size: 28px;
+  text-align: center;
+  margin-bottom: 20px;
+  color: #9c9c9c;
+}
+
+.test-selector {
+  text-align: center;
+}
+
+.subtitle {
+  font-size: 22px;
+  margin-bottom: 12px;
+  color: #9c9c9c;
+}
+
+.test-options {
+  list-style: none;
+  padding: 0;
+}
+
+.test-option {
   margin: 10px 0;
+  font-size: 18px;
+  color: #ffffff;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.test-option:hover {
+  color: #333;
+}
+
+.test-display {
+  margin-top: 20px;
 }
 </style>

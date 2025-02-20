@@ -1,34 +1,36 @@
 <template>
   <div class="test-container">
-    <h2 class="text-xl font-bold mb-4">Тест на пространственное мышление</h2>
+    <h2 class="text-3xl font-bold mb-6">Тест на пространственное мышление</h2>
     
     <div v-if="!testStarted">
-      <p class="test-description">
-        Этот тест предназначен для изучения вашей способности мысленно визуализировать и производить манипуляции с графическими объектами (напр. вращать фигуры 3D или собирать различные части в определенное целое).  Вам будет представлено несколько различных типов заданий. У вас есть 10 минут, чтобы решить 10 вопросов.
+      <p class="test-description text-xl">
+        Этот тест предназначен для изучения вашей способности мысленно визуализировать и производить манипуляции с графическими объектами (напр. вращать фигуры 3D или собирать различные части в определенное целое). Вам будет представлено несколько различных типов заданий. У вас есть 10 минут, чтобы решить 10 вопросов.
         <br /><br />
         Как только Вы проставите ответ на последний вопрос, появится кнопка "Завершить тестирование", нажав которую, Вы можете посмотреть результаты. Как только время закончится, тест автоматически завершается, и в зачет идут те ответы, которые Вы успели проставить. Все вопросы, ответы на которые не были проставлены, будут засчитаны как неверные. Попробуйте для тестирования найти свободное время и место, где Вы не будете отвлекаться.
       </p>
-      <h3 class="mb-2">Выберите режим теста:</h3>
+      <h3 class="text-2xl mb-4">Выберите режим теста:</h3>
       <div class="buttons-container">
         <button @click="startTest(true)" class="btn btn-blue">С таймером</button>
         <button @click="startTest(false)" class="btn btn-gray">Без таймера</button>
       </div>
+      <button @click="exitToHome" class="btn btn-red mt-4">Выйти</button>
     </div>
     
     <div v-else>
       <div v-if="currentQuestionIndex < questions.length">
-        <p class="mb-2">Вопрос {{ currentQuestionIndex + 1 }} из {{ questions.length }}</p>
-        <p class="question-text">{{ questions[currentQuestionIndex].questionText }}</p>
+        <p class="mb-2 text-xl">Вопрос {{ currentQuestionIndex + 1 }} из {{ questions.length }}</p>
+        <p class="question-text text-2xl font-semibold">{{ questions[currentQuestionIndex].questionText }}</p>
         <img :src="questions[currentQuestionIndex].image" alt="Задание" class="question-image" />
         <div v-if="!testFinished" class="answers">
           <button v-for="(answer, index) in questions[currentQuestionIndex].answers" :key="index"
-            @click="selectAnswer(index)" class="answer-btn">
+            @click="selectAnswer(index)" class="answer-btn text-xl">
             {{ answer.text }}
           </button>
         </div>
-        <p v-if="isTimed" class="timer">Оставшееся время: {{ formatTime(timeLeft) }}</p>
+        <p v-if="isTimed" class="timer text-xl font-bold">Оставшееся время: {{ formatTime(timeLeft) }}</p>
         <div class="buttons-container">
           <button v-if="currentQuestionIndex > 0" @click="prevQuestion" class="btn btn-gray">Назад</button>
+          <button @click="exitToHome" class="btn btn-red">Выйти</button>
         </div>
       </div>
       <div v-if="currentQuestionIndex >= questions.length && !testFinished">
@@ -38,21 +40,22 @@
         </div>
       </div>
       <div v-if="testFinished">
-        <h3 class="text-lg font-bold">Тест завершён!</h3>
-        <p>Ваш результат: {{ correctAnswers }} / {{ questions.length }}</p>
-        <h4 v-if="mistakes.length" class="text-md font-bold mt-4">Ваши ошибки:</h4>
+        <h3 class="text-3xl font-bold">Тест завершён!</h3>
+        <p class="text-2xl">Ваш результат: {{ correctAnswers }} / {{ questions.length }}</p>
+        <h4 v-if="mistakes.length" class="text-2xl font-bold mt-4">Ваши ошибки:</h4>
         <ul v-if="mistakes.length">
-          <li v-for="(mistake, index) in mistakes" :key="index" class="text-red-500">
+          <li v-for="(mistake, index) in mistakes" :key="index" class="text-red-500 text-xl">
             Вопрос {{ mistake.questionIndex + 1 }}: Вы выбрали "{{ mistake.selectedAnswer }}", но правильный ответ - "{{ mistake.correctAnswer }}"
           </li>
         </ul>
         <div class="buttons-container">
-          <button @click="exitTest" class="btn btn-red">Выйти</button>
+          <button @click="exitToHome" class="btn btn-red">Выйти на главную</button>
         </div>
       </div>
     </div>
   </div>
 </template>
+
 
 <script>
 export default {
@@ -196,13 +199,10 @@ export default {
     },
     selectAnswer(index) {
       const question = this.questions[this.currentQuestionIndex];
-      
       if (this.selectedAnswers[this.currentQuestionIndex] === true) {
         this.correctAnswers--;
       }
-      
       this.selectedAnswers[this.currentQuestionIndex] = question.answers[index].correct;
-
       if (question.answers[index].correct) {
         this.correctAnswers++;
       } else {
@@ -213,7 +213,6 @@ export default {
           correctAnswer: question.answers.find(ans => ans.correct).text
         });
       }
-
       this.nextQuestion();
     },
     nextQuestion() {
@@ -233,8 +232,8 @@ export default {
       const secs = seconds % 60;
       return `${minutes}:${secs < 10 ? "0" : ""}${secs}`;
     },
-    exitTest() {
-      this.$emit("exit");
+    exitToHome() {
+      window.location.href = "/";
     }
   }
 };
@@ -244,13 +243,13 @@ export default {
 .buttons-container {
   display: flex;
   justify-content: center;
-  gap: 8px;
-  margin-top: 8px;
+  gap: 12px;
+  margin-top: 12px;
 }
 .btn {
-  padding: 6px 12px;
-  font-size: 14px;
-  border-radius: 4px;
+  padding: 10px 18px;
+  font-size: 18px;
+  border-radius: 6px;
   font-weight: bold;
   transition: background 0.3s;
 }
